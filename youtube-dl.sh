@@ -1,13 +1,13 @@
 #! /bin/bash
 #This Bash-script should be executed every day (crontab -e) 
 
-#update youtube-dl
-#youtube-dl -U
-#sleep 5
+update youtube-dl
+youtube-dl -U
+sleep 5
 # fav dir
 # put in your favorite path
 favdir="auto-yt"
-echo $favdir
+#echo $favdir
 #Date= yesterday
 datum=$(date -d "1 day ago" '+%Y%m%d')
 
@@ -27,7 +27,6 @@ cd ~/.mozilla/firefox/*default*
 #save all your Youtube playlists in auto-yt
 dbarray=( $(sqlite3 -list places.sqlite 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))'; ))
 #switch  to your youtube download folder
-echo $favdir
 cd ~/Downloads
 #let youtube-dl do the work  and download brandnew videos
 for i in ${dbarray[@]}; do
