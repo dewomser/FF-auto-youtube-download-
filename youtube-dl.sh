@@ -11,7 +11,7 @@
 # Variables #
 #firefox manages bookmarks from database. 
 #save all your Youtube playlists in $favdir
-favdir="gestof"
+favdir="bestof"
 echo $favdir
 #Download folder
 dl_folder="/home/foo/Downloads/youtube-dl/"
@@ -20,6 +20,8 @@ echo  $dl_folder
 datum=$(date -d "1 day ago" '+%Y%m%d')
 # Videos per day in each playlist
 perday=4
+#if aria2 is installed example :--external-downloader aria2c  --external-downloader-args "-j 8 -s 8 -x 8 -k 5M"
+aria2=''
 
 # from Firefox bookmarks
 # switch to the default firefox folder with sqlite databases.
@@ -46,7 +48,7 @@ cd  $dl_folder || exit
 # let youtube-dl do the work  and download brandnew videos
 # 
 for i in "${dbarray[@]}"; do
-youtube-dl --external-downloader aria2c  --external-downloader-args "-j 8 -s 8 -x 8 -k 5M" --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
+youtube-dl "$aria2" --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
 # echo $i
 done
 
