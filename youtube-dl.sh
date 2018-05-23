@@ -23,7 +23,6 @@ perday=4
 aria2=''
 
 ## from Firefox bookmarks ##
-## switch to the default firefox folder with sqlite databases. ##
 ## change *default* if you have other profiles than default. ##
 ## comment if you load from array ##
 cd ~/.mozilla/firefox/*default* || exit
@@ -46,7 +45,7 @@ cd  $dl_folder || exit
 ## let youtube-dl do the work  and download brandnew videos##
 # 
 for i in "${dbarray[@]}"; do
-youtube-dl "$aria2" --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
+youtube-dl $aria2 --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
 # echo $i
 done
 
