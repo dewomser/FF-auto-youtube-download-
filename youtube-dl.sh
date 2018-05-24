@@ -49,5 +49,5 @@ youtube-dl $aria2 --dateafter "$datum" --playlist-end "$perday" --max-downloads 
 # echo $i
 done
 
-## optional ##
+## optional ###
 #dolphin $dl_folder
