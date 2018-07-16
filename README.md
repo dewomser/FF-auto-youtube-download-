@@ -1,12 +1,12 @@
 
 
 # FF-auto-youtube-download-
-## Download favourite Videos from an array or Firefox-folder
+## Download favourite Videos from an (1)array or (2)Firefox-bookmarks-folder
 
-No need to login
+No need to login at Youtube
 
-The script downloads only fresh Videos to disk.
+The script downloads only fresh Videos to disk. 
 
-1. option array : only shell and youtube-dl is needed
+1. array : only shell and [youtube-dl](https://github.com/rg3/youtube-dl) is needed
 
-2. option firefox-folder : shell, firefox, sqlite3, (aria2)
+2. firefox-bookmark-folder : shell, youtube-dl, firefox (tested mit 61.0.1), sqlite3, aria2 (fast download as an option)
