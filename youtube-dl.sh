@@ -8,6 +8,12 @@
 
 ## Variables ##
 ## Firefox manages bookmarks from database. ##
+
+# All firefox intances must be killed.
+# Reason is: Error: database is locked
+
+killall -9 firefox; sleep 3
+
 # #save all your Youtube playlists in $favdir ##
 favdir="bestof"
 echo $favdir
