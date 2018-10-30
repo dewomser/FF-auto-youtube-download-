@@ -8,14 +8,18 @@
 # pip install --upgrade youtube-dl
 # sleep 3
 
-## Firefox manages bookmarks from database. ##
-## All firefox instances must be killed.
-## Reason is: Error: database is locked
-killall -9 firefox; sleep 3
+## If Firefox is already running AND Sqlite bookmarks are used, this script will not do without action: ##
+## Firefox manages bookmarks from a locked database.
+
+## 1.) All Firefox instances must be killed. Manualy or uncomment next Line
+# killall -9 firefox; sleep 3
+## OR
+## 2.) copy database and query there. Uncomment line 22 ; read line 60  
 
 ## from Firefox bookmarks ##
 ## change *default* if you have other profiles than default. ##
 cd ~/.mozilla/firefox/*default* || exit
+# cp places.sqlite places2.sqlite
 
 ## Variables ##
 
@@ -33,7 +37,7 @@ aria2=''
 ## load from database or array
 loadfrom=database
 
-## Start 
+## Start ##
 
 # echo $favdir
 # echo  $dl_folder
@@ -53,6 +57,7 @@ then
  
 else
  ## this line puts FF favourites from sqlite3 to an array ##
+ ## edit "places" to "places2 in next line"
  dbarray=( $(sqlite3 -list places.sqlite 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))'; ))
 fi
 cd  $dl_folder || exit
