@@ -12,9 +12,10 @@
 ## Save all your Youtube playlists in favdir ##
 favdir="bestof"
 ## Firefox running ?
-ffon=0; ps -ef|grep firefox|grep -v grep && ffon=1
+# ffon=0; ps -ef|grep firefox|grep -v grep && ffon=1
+ffon=0; pgrep firefox && ffon=1
 ## Download folder ##
-dl_folder="/home/foo/Downloads/youtube-dl/"
+dl_folder=~/Downloads/youtube-dl
 ## Date= yesterday ##
 datum=$(date -d "1 day ago" '+%Y%m%d')
 ## Max. videos / datum to each playlist ##
@@ -31,7 +32,7 @@ sqltdata=places.sqlite
 
 cd ~/.mozilla/firefox/*default* || exit
 
-if (( ffon == 1 && loadfrom == database ))
+if [ $ffon == 1 ] && [ $loadfrom == database ]
 then
 cp $sqltdata places2.sqlite
 sqltdata=places2.sqlite
