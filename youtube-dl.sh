@@ -14,6 +14,8 @@ favdir="bestof"
 ## Firefox running ?
 # ffon=0; ps -ef|grep firefox|grep -v grep && ffon=1
 ffon=0; pgrep firefox && ffon=1
+## Firefox default Profil
+ffprofile=$(grep 'Path=' ~/.mozilla/firefox/profiles.ini | sed s/^Path=//)
 ## Download folder ##
 dl_folder=~/Downloads/youtube-dl
 ## Date= yesterday ##
@@ -30,14 +32,6 @@ sqltdata=places.sqlite
 
 ## Start ##
 
-cd ~/.mozilla/firefox/*default* || exit
-
-if [ $ffon == 1 ] && [ $loadfrom == database ]
-then
-cp $sqltdata places2.sqlite
-sqltdata=places2.sqlite
-fi
-
 ## only edit dbarray test-content if you want to use it
 
 if [ $loadfrom == array ]
@@ -52,6 +46,17 @@ then
 ##
  
 else
+
+# cd ~/.mozilla/firefox/*default* || exit
+cd ~/.mozilla/firefox/$ffprofile || exit
+
+
+if [ $ffon == 1 ] && [ $loadfrom == database ]
+then
+cp $sqltdata places2.sqlite
+sqltdata=places2.sqlite
+fi
+
  ## This line puts FF bookmarks from sqlite3 to an array ##
 
  dbarray=( $(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))'; ))
