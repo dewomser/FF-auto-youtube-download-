@@ -2,6 +2,7 @@
 
 # FF-auto-youtube-download-
 ## Download  Video folders and playlists from links stored in an (1)array or (2)Firefox-bookmarks-folder.
+[![Build Status](https://travis-ci.org/dewomser/FF-auto-youtube-download-.svg?branch=master)](https://travis-ci.org/dewomser/FF-auto-youtube-download-) Shellcheck approved.
 
 No need to login at Youtube !
 
