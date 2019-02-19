@@ -1,19 +1,19 @@
 #!/bin/bash
-if which firefox >/dev/null; then
-    firefox=1
+if command -v firefox >/dev/null; then
+   firefox=1
 else
     firefox=0
 fi
 
 
-if which youtube-dl >/dev/null; then
+if command -v youtube-dl >/dev/null; then
     youtube_dl=1
 else
     youtube_dl=0
 fi
 
 
-if which sqlite3 >/dev/null; then
+if command -v sqlite3 >/dev/null; then
     sqlite3=1
 else
     sqlite3=0

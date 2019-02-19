@@ -40,10 +40,11 @@ then
  "https://www.youtube.com/user/GalileoOffiziell/videos"
  "https://www.youtube.com/user/BibisBeautyPalace/videos?sort=dd&shelf_id=1&view=0"
  "https://www.youtube.com/channel/UC53bIpnef1pwAx69ERmmOLA"
-##-----carefully edit below this line ! ---------
+)
+ ##-----carefully edit below this line ! ---------
  else
  # cd ~/.mozilla/firefox/*default* || exit
- cd ~/.mozilla/firefox/$ffprofile || exit
+ cd "$HOME/.mozilla/firefox/$ffprofile" || exit
  ## If Firefox is running, db is locked. need a copy ##
  if [ $ffon == 1 ] && [ $loadfrom == database ]
   then
@@ -51,7 +52,7 @@ then
   sqltdata=places2.sqlite
  fi
  ## This line puts FF bookmarks from sqlite3 to an array ##
- dbarray=( $(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))'; ))
+ readarray -t dbarray < "$(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))'; )"
 fi
 
 ## Let youtube-dl do the work  and download brandnew videos ##
