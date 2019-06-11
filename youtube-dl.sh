@@ -6,7 +6,8 @@
 # "youtube-dl -U" 
 ## or 
 # pip install --upgrade youtube-dl
-# sleep 3
+sleep 1
+#zaehl=0
 
 ## Variables ##
 ## ----------important-------------
@@ -19,21 +20,28 @@ favdir="bestof"
 ffon=0; pgrep firefox && ffon=1
 ## Firefox default Profil
 ## only if you not using the default FF-profile, this line must be edited ## 
-ffprofile=$(grep 'Path=' ~/.mozilla/firefox/profiles.ini | sed s/^Path=//)
+# ffprofile=$(grep 'Path=' ~/.mozilla/firefox/profiles.ini | sed s/^Path=//)
 ## Date= yesterday ##
 datum=$(date -d "1 day ago" '+%Y%m%d')
 ## Max. videos download in each playlist ##
 perday=4
 ## if aria2 downloader is installed and you want to use it, change from 0 to 1  ##
-aria=0
+aria2=''
 ## load from "database" or "array". database == firefox SQLITE 
 loadfrom=database
 ## firefox database
 sqltdata=places.sqlite
 
 ## Start ##
+cd ~/.mozilla/firefox/*default* || exit
 
-##  Use array, edit dbarray for your needs else this is ignored. ##
+if [ $ffon == 1 ] && [ $loadfrom == database ]
+then
+cp $sqltdata places2.sqlite
+sqltdata=places2.sqlite
+fi
+## only edit dbarray test-content if you want to use it
+
 if [ $loadfrom == array ]
 then
  dbarray=(
@@ -41,33 +49,31 @@ then
  "https://www.youtube.com/user/BibisBeautyPalace/videos?sort=dd&shelf_id=1&view=0"
  "https://www.youtube.com/channel/UC53bIpnef1pwAx69ERmmOLA"
 )
- ##-----carefully edit below this line ! ---------
- else
- # cd ~/.mozilla/firefox/*default* || exit
- cd "$HOME/.mozilla/firefox/$ffprofile" || exit
- ## If Firefox is running, db is locked. need a copy ##
- if [ $ffon == 1 ] && [ $loadfrom == database ]
-  then
-  cp $sqltdata places2.sqlite
-  sqltdata=places2.sqlite
- fi
+ ##
+##--------------------Do not edit below this line ! -----------------------
+##
+ 
+else
  ## This line puts FF bookmarks from sqlite3 to an array ##
- readarray -t dbarray < "$(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))'; )"
+
+ dbarray=( $(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))'; ))
 fi
+cd  $dl_folder || exit
 
 ## Let youtube-dl do the work  and download brandnew videos ##
-cd $dl_folder || exit
-if [ $aria == 1 ]
-then
- for i in "${dbarray[@]}"; do
-youtube-dl --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" --external-downloader aria2c --external-downloader-args '-c -j 3 -x 3 -s 3 -k 1M' "$i"
- done
- else
- for i in "${dbarray[@]}"; do
-youtube-dl --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
- done
-fi
+## Wenn die Variable zaehl aktiviert ist, kann der parameter eingebaut werden.
+##--download-archive $dl_folder/archive/archive-$zaehl.txt
 
-## optional show downloadfolder ##
+for i in "${dbarray[@]}"; do
+((zaehl++))
+youtube-dl $aria2 --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
+# echo $i
+done
+
+
+## optional ##
+
 # dolphin $dl_folder
-# f=$(find -ctime 1) ; notify-send "New vidoclips": "$f" --icon=video-x-generic
+## send-notify ##
+# f=$(find $dl_folder -mtime 0,2 -type f -regex '.*\.\(mkv\|mp4\|wmv\|flv\|webm\|mov\)') && notify-send "Neue Videos": "$f" --icon=video-x-generic
+
