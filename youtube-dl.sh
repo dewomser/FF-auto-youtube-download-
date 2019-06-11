@@ -25,7 +25,8 @@ ffon=0; pgrep firefox && ffon=1
 datum=$(date -d "1 day ago" '+%Y%m%d')
 ## Max. videos download in each playlist ##
 perday=4
-## if aria2 downloader is installed and you want to use it, change from 0 to 1  ##
+## if aria2 is installed example : ##
+# aria2='--external-downloader aria2c  --external-downloader-args "-j 8 -s 8 -x 8 -k 5M"'
 aria2=''
 ## load from "database" or "array". database == firefox SQLITE 
 loadfrom=database
