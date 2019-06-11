@@ -62,10 +62,9 @@ cd  $dl_folder || exit
 
 ## Let youtube-dl do the work  and download brandnew videos ##
 ## Wenn die Variable zaehl aktiviert ist, kann der parameter eingebaut werden.
-##--download-archive $dl_folder/archive/archive-$zaehl.txt
+##--download-archive $dl_folder/archive/archive-$zaehl.txt und ((zaehl++))
 
 for i in "${dbarray[@]}"; do
-((zaehl++))
 youtube-dl $aria2 --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
 # echo $i
 done
