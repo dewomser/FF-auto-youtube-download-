@@ -69,4 +69,5 @@ youtube-dl --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perda
 fi
 
 ## optional show downloadfolder ##
-#dolphin $dl_folder
+# dolphin $dl_folder
+# f=$(find -ctime 1) ; notify-send "New vidoclips": "$f" --icon=video-x-generic
