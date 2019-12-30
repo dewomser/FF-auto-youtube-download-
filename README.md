@@ -21,6 +21,6 @@ There is a notifier script for the Kubuntu desktop: yt-dl-send-notify.sh
 ## Crontab these scripts  !
 1. 0 */2 * * * /home/foo/bin/youtube-dl.sh > /dev/null 2>&1
 
-2. 0 *  * * *  XDG_RUNTIME_DIR=/run/user/$(id -u) /home/karl/bin/send-notify.sh
+2. 0 *  * * *  XDG_RUNTIME_DIR=/run/user/$(id -u) /home/foo/bin/yt-dl-send-notify.sh
 
 3. update youtube-dl, may be useful (0 12 * * * youtube-dl -U)
