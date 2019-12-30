@@ -12,6 +12,9 @@
 dl_folder=~/Downloads/youtube-dl/
 f=$(find $dl_folder -mtime 0 -type f -regex '.*\.\(mkv\|mp4\|wmv\|flv\|webm\|mov\)')
 folder1=$(echo $dl_folder|sed "s/\//\\\\\//g")
-f1=$(echo "$f"|sed "s/$folder1/\n/g")
+
+f1=$f
+## comment f1=$f and uncomment next line. Reason is this line is not shellcheck compatible. 
+#f1=$(echo "$f"|sed "s/$folder1/\n/g")
 
 notify-send "Neue Videos": "$f1" --icon=video-x-generic
