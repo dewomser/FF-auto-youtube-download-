@@ -12,5 +12,6 @@
 dl_folder=~/Downloads/youtube-dl/
 f=$(find $dl_folder -mtime 0 -type f -regex '.*\.\(mkv\|mp4\|wmv\|flv\|webm\|mov\)')
 folder1=$(echo $dl_folder|sed "s/\//\\\\\//g")
-f1=$(echo $f|sed "s/$folder1/\n /g")
+f1=$(echo "$f"|sed "s/$folder1/\n/g")
+
 notify-send "Neue Videos": "$f1" --icon=video-x-generic
