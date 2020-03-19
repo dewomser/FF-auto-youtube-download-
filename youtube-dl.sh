@@ -2,16 +2,16 @@
 ## This Shellscript downloads all fresh videos from a firefox bookmark folder. ##
 
 ## Update your youtube-dl ! ##
-youtube-dl -U 
+#youtube-dl -U 
 ## or 
 # pip install --upgrade youtube-dl
 sleep 1
 zaehl=0
 ## Variables ##
 
-## Save all your Youtube playlists in favdir (amp3) ##
+## Save all your Youtube playlists in favdir Example amp3 ##
 favdir="amp3"
-## Firefox running ?
+## Firefox running ? 
 # ffon=0; ps -ef|grep firefox|grep -v grep && ffon=1
 ffon=0; pgrep firefox && ffon=1
 ## Download folder ##
@@ -67,22 +67,5 @@ youtube-dl $aria2 --download-archive $dl_folder/archive/archive-$zaehl.txt --dat
 # echo $i
 done
 ##
-##--------------------Do not edit above this line ! -----------------------
-##
-
-## optional after all Downloads ##
-
-## Feedback if this script is started from crontab
-#export HOME=/home/karl
-#export DISPLAY=:0.0
-## Open folder in dolphin KDE
-#dolphin $dl_folder
-## Notifier KDE
-#f=$(find $dl_folder -mtime 0,2 -type f -regex '.*\.\(mkv\|mp4\|wmv\|flv\|webm\|mov\)') && notify-send "Neue Videos": "$f" --icon=video-x-generic
-
- ## Notifier KDE in nice
-#f=$(find $dl_folder -mtime 0 -type f -regex '.*\.\(mkv\|mp4\|wmv\|flv\|webm\|mov\)')
-#folder1=$(echo $dl_folder|sed "s/\//\\\\\//g")
-#f1=$(echo $f|sed "s/$folder1/\n /g")
-#notify-send "Neue Videos": "$f1" --icon=video-x-generic
+##--------------------The notifier for KDE is now an extra script : yt-dl-send-notify.sh ! -----------------------
 
