@@ -9,8 +9,11 @@
 
 dl_folder=~/Downloads/youtube-dl/
 f=$(find $dl_folder -mtime 0 -type f -regex '.*\.\(mkv\|mp4\|wmv\|flv\|webm\|mov\)')
+if [ -z "$f" ]
+then exit
+else
 folder1="$(echo $dl_folder|sed "s/\//\\\\\//g")"
 sedarg="sed s/$folder1/\n/g"
 f=$(echo "$f"|$sedarg)
 notify-send "Neue Videos": "$f" --icon=video-x-generic
-
+fi
