@@ -1,37 +1,45 @@
 #!/bin/bash
 ## This Shellscript downloads all fresh videos from a firefox bookmark folder. ##
 
-## Update your youtube-dl ! ##
-#youtube-dl -U 
-## or 
-# pip install --upgrade youtube-dl
+##Variables to edit from the user##
+
+#path to youtube-dl. If you dont know, use cli: "which youtube"#
+yot_dl_p="$HOME/bin/youtube-dl"
+# folder for the downkoaded Videos #
+dl_folder=~/Downloads/youtube-dl
+# load from "database" or "array".#
+loadfrom=database
+# If Loadfrom=database, save all your Youtube playlists in favdir example (amp3) #
+favdir="amp3"
+
+## Variables to edit carefully ##
 sleep 1
 zaehl=0
-## Variables ##
-
-## Save all your Youtube playlists in favdir Example amp3 ##
-favdir="amp3"
-## Firefox running ? 
-# ffon=0; ps -ef|grep firefox|grep -v grep && ffon=1
+# Firefox running ?#
 ffon=0; pgrep firefox && ffon=1
-## Download folder ##
-dl_folder=~/Downloads/youtube-dl
-## Date= yesterday ##
+# Date= yesterday #
 datum=$(date -d "1 day ago" '+%Y%m%d')
-## Max. videos / datum to each playlist ##
+# Max. videos / datum to each playlist #
 perday=4
-## if aria2 is installed example : ##
+# if aria2 is installed example : #
 # aria2='--external-downloader aria2c  --external-downloader-args "-j 8 -s 8 -x 8 -k 5M"'
 aria2=''
-## load from "database" or "array".
-loadfrom=database
-## firefox database
+# firefox database#
 sqltdata=places.sqlite
 
+
+
+## Update your youtube-dl ! ##
+$yot_dl_p -U 
+## or 
+# pip install --upgrade youtube-dl
+
+
+
 ## Start ##
-
+# there should only be one default , if not change cd #
 cd ~/.mozilla/firefox/*default* || exit
-
+# you cannot read from a running sqlite, but to copy is allowed#
 if [ $ffon == 1 ] && [ $loadfrom == database ]
 then
 cp $sqltdata places2.sqlite
@@ -54,8 +62,9 @@ then
 else
  ## This line puts FF bookmarks from sqlite3 to an array ##
 
-# dbarray=( $(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))'; ))
-readarray -t dbarray < "$(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))'; )"
+#dbarray=( $(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))'; ))
+
+readarray -t dbarray < <(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))')
 fi
 cd  $dl_folder || exit
 
@@ -63,9 +72,26 @@ cd  $dl_folder || exit
 
 for i in "${dbarray[@]}"; do
 ((zaehl++))
-youtube-dl $aria2 --download-archive $dl_folder/archive/archive-$zaehl.txt --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
+$yot_dl_p $aria2 --download-archive $dl_folder/archive/archive-$zaehl.txt --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
 # echo $i
 done
 ##
-##--------------------The notifier for KDE is now an extra script : yt-dl-send-notify.sh ! -----------------------
+##--------------------Do not edit above this line ! -----------------------
+##
+
+## optional after all Downloads ##
+
+## Feedback if this script is started from crontab
+#export HOME=/home/karl
+#export DISPLAY=:0.0
+## Open folder in dolphin KDE
+#dolphin $dl_folder
+## Notifier KDE
+#f=$(find $dl_folder -mtime 0,2 -type f -regex '.*\.\(mkv\|mp4\|wmv\|flv\|webm\|mov\)') && notify-send "Neue Videos": "$f" --icon=video-x-generic
+
+ ## Notifier KDE in nice
+#f=$(find $dl_folder -mtime 0 -type f -regex '.*\.\(mkv\|mp4\|wmv\|flv\|webm\|mov\)')
+#folder1=$(echo $dl_folder|sed "s/\//\\\\\//g")
+#f1=$(echo $f|sed "s/$folder1/\n /g")
+#notify-send "Neue Videos": "$f1" --icon=video-x-generic
 
