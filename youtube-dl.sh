@@ -75,23 +75,6 @@ for i in "${dbarray[@]}"; do
 $yot_dl_p $aria2 --download-archive $dl_folder/archive/archive-$zaehl.txt --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
 # echo $i
 done
-##
-##--------------------Do not edit above this line ! -----------------------
-##
 
-## optional after all Downloads ##
-
-## Feedback if this script is started from crontab
-#export HOME=/home/karl
-#export DISPLAY=:0.0
-## Open folder in dolphin KDE
-#dolphin $dl_folder
-## Notifier KDE
-#f=$(find $dl_folder -mtime 0,2 -type f -regex '.*\.\(mkv\|mp4\|wmv\|flv\|webm\|mov\)') && notify-send "Neue Videos": "$f" --icon=video-x-generic
-
- ## Notifier KDE in nice
-#f=$(find $dl_folder -mtime 0 -type f -regex '.*\.\(mkv\|mp4\|wmv\|flv\|webm\|mov\)')
-#folder1=$(echo $dl_folder|sed "s/\//\\\\\//g")
-#f1=$(echo $f|sed "s/$folder1/\n /g")
-#notify-send "Neue Videos": "$f1" --icon=video-x-generic
+## -----------push notification is now an extra script ----+##
 
