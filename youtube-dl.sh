@@ -37,15 +37,34 @@ $yot_dl_p -U
 
 
 ## Start ##
-# there should only be one default , if not change cd #
-cd ~/.mozilla/firefox/*default* || exit
+
+if [ $loadfrom == database ]
+then
+cd ~/.mozilla/firefox || exit
+#find ./ -maxdepth 1 -name "*default*" -type d
+ffdefault=$(find ./ -maxdepth 1 -name "*default*" -type d | wc -l)
+if [ "$ffdefault" -gt 1 ]
+then
+echo "There is more then 1 default Firefox profile ! You have to choose one at ~/.mozilla/firefox and edit this script for your need"
+find ./ -maxdepth 1 -name "*default*" -type d 
+exit
+elif [ "$ffdefault" == 0 ]
+then
+echo " There is no Firefox profile in your ~/.mozilla/firefox but it should. Script can't continue !"
+exit
+fi
+
+# If more then 1 FF profile  Edit here ! 
+# change *default*  to your profile. Example fdgsfdgfs43543.default.fdsgf 
+cd ./*default* || exit
+
 # you cannot read from a running sqlite, but to copy is allowed#
-if [ $ffon == 1 ] && [ $loadfrom == database ]
+if [ $ffon == 1 ]
 then
 cp $sqltdata places2.sqlite
 sqltdata=places2.sqlite
 fi
-
+fi
 ## only edit dbarray test-content if you want to use it
 
 if [ $loadfrom == array ]
@@ -61,9 +80,9 @@ then
  
 else
  ## This line puts FF bookmarks from sqlite3 to an array ##
-
+#oldschool#
 #dbarray=( $(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))'; ))
-
+#new V.bash4.0#
 readarray -t dbarray < <(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))')
 fi
 cd  $dl_folder || exit
@@ -76,5 +95,4 @@ $yot_dl_p $aria2 --download-archive $dl_folder/archive/archive-$zaehl.txt --date
 # echo $i
 done
 
-## -----------push notification is now an extra script ----+##
 
