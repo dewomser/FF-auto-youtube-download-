@@ -1,32 +1,40 @@
 #!/bin/bash
 ## This Shellscript downloads all fresh videos from a firefox bookmark folder. ##
 
-##Variables to edit from the user##
+### Variables to edit from the user##
 
-#path to youtube-dl. If you dont know, use cli: "which youtube"#
-yot_dl_p="$HOME/bin/youtube-dl"
-# folder for the downkoaded Videos #
-dl_folder=~/Downloads/youtube-dl
+## path to youtube-dl. If you dont know, use cli: "which youtube-dl"#
+# example yot_dl_p=$(which youtube-dl)
+# example declare -r yot_dl_p="youtube-dl"
+declare -r yot_dl_p="$HOME/bin/youtube-dl"
+
+# folder for the downloaded Videos #
+declare -r dl_folder=~/Downloads/youtube-dl
+
 # load from "database" or "array".#
-loadfrom=database
+declare -r loadfrom=database
+declare -a dbarray
 # If Loadfrom=database, save all your Youtube playlists in favdir example (amp3) #
-favdir="amp3"
-
+declare -r favdir="amp3"
+declare -i ffdefault
+declare -i ffon
 ## Variables to edit carefully ##
 sleep 1
-zaehl=0
+declare -i zaehl=0
+
 # Firefox running ?#
-ffon=0; pgrep firefox && ffon=1
+ffon=0; pgrep firefox && ffon=1 
+
+##youtube-dl Parameter
 # Date= yesterday #
 datum=$(date -d "1 day ago" '+%Y%m%d')
 # Max. videos / datum to each playlist #
-perday=4
+declare -i perday=4
 # if aria2 is installed example : #
 # aria2='--external-downloader aria2c  --external-downloader-args "-j 8 -s 8 -x 8 -k 5M"'
-aria2=''
+declare -r aria2=''
 # firefox database#
 sqltdata=places.sqlite
-
 
 
 ## Update your youtube-dl ! ##
@@ -35,13 +43,12 @@ $yot_dl_p -U
 # pip install --upgrade youtube-dl
 
 
-
 ## Start ##
 
 if [ $loadfrom == database ]
 then
+#Firefox profile ?
 cd ~/.mozilla/firefox || exit
-#find ./ -maxdepth 1 -name "*default*" -type d
 ffdefault=$(find ./ -maxdepth 1 -name "*default*" -type d | wc -l)
 if [ "$ffdefault" -gt 1 ]
 then
@@ -50,7 +57,7 @@ find ./ -maxdepth 1 -name "*default*" -type d
 exit
 elif [ "$ffdefault" == 0 ]
 then
-echo " There is no Firefox profile in your ~/.mozilla/firefox but it should. Script can't continue !"
+echo "There is no Firefox profile in your ~/.mozilla/firefox but it should. Script can't continue !"
 exit
 fi
 
@@ -79,20 +86,17 @@ then
 ##
  
 else
- ## This line puts FF bookmarks from sqlite3 to an array ##
-#oldschool#
-#dbarray=( $(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))'; ))
-#new V.bash4.0#
+## This line puts FF bookmarks from sqlite3 to an array ##
 readarray -t dbarray < <(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))')
 fi
 cd  $dl_folder || exit
 
 ## Let youtube-dl do the work  and download brandnew videos ##
 
-for i in "${dbarray[@]}"; do
+for i in "${dbarray[@]}"
+do
 ((zaehl++))
 $yot_dl_p $aria2 --download-archive $dl_folder/archive/archive-$zaehl.txt --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
 # echo $i
 done
-
-
+exit
