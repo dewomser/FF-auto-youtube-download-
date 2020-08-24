@@ -8,7 +8,7 @@
 #0 *  * * *  XDG_RUNTIME_DIR=/run/user/$(id -u) /home/foo/bin/yt-dl-send-notify.sh
 
 dl_folder=~/Downloads/youtube-dl/
-f=$(find $dl_folder -mtime 0 -type f -regex '.*\.\(mkv\|mp4\|wmv\|flv\|webm\|mov\)')
+f=$(find $dl_folder -newermt '4 hours ago' -type f -regex '.*\.\(mkv\|mp4\|wmv\|flv\|webm\|mov\)')
 if [ -z "$f" ]
 then exit
 else
