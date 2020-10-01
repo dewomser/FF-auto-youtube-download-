@@ -23,7 +23,7 @@ sleep 1
 declare -i zaehl=0
 
 # Firefox running ?#
-ffon=0; pgrep firefox && ffon=1 
+ffon=0; pgrep -f firefox && ffon=1 
 
 ##youtube-dl Parameter
 # Date= yesterday #
