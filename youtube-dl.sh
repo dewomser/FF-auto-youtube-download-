@@ -12,7 +12,7 @@ echo "$test"
 # folder for the downloaded Videos #
 declare -r dl_folder="$HOME/Downloads/youtube-dl"
 test="No Download folder defined" ; find "$dl_folder"  >/dev/null 2>&1  && test="Found Downlad folder at: $dl_folder"
-echo $test
+echo "$test"
 # load from "database" or "array".#
 declare -r loadfrom=database
 declare -a dbarray
