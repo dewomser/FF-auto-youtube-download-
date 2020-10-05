@@ -4,13 +4,15 @@
 ### Variables to edit from the user##
 
 ## path to youtube-dl. If you dont know, use cli: "which youtube-dl"#
-# example yot_dl_p=$(which youtube-dl)
+# example declare -r yot_dl_p=$(which youtube-dl)
 # example declare -r yot_dl_p="youtube-dl"
 declare -r yot_dl_p="$HOME/bin/youtube-dl"
-
+test="Program youtube-dl not found" ; find "$yot_dl_p"  >/dev/null 2>&1  && test="youtube-dl found at: $yot_dl_p"
+echo "$test"
 # folder for the downloaded Videos #
-declare -r dl_folder=~/Downloads/youtube-dl
-
+declare -r dl_folder="$HOME/Downloads/youtube-dl"
+test="No Download folder defined" ; find "$dl_folder"  >/dev/null 2>&1  && test="Found Downlad folder at: $dl_folder"
+echo $test
 # load from "database" or "array".#
 declare -r loadfrom=database
 declare -a dbarray
@@ -21,8 +23,9 @@ declare -i ffon
 ## Variables to edit carefully ##
 sleep 1
 
-# Firefox running ?#
-ffon=0; pgrep -f firefox && ffon=1 
+# Firefox is running ?#
+# ffon=0; pgrep -f firefox && ffon=1  // + echo pid numbers
+ffon=0; pgrep -f firefox >/dev/null 2>&1  && ffon=1
 
 ##youtube-dl Parameter
 # Date= yesterday #
@@ -56,7 +59,7 @@ find ./ -maxdepth 1 -name "*default*" -type d
 exit
 elif [ "$ffdefault" == 0 ]
 then
-echo "There is no Firefox profile in your ~/.mozilla/firefox but it should. Script can't continue !"
+echo "There is no Firefox profile in your $HOME/.mozilla/firefox but it should. Script can't continue !"
 exit
 fi
 
@@ -88,15 +91,18 @@ else
 ## This line puts FF bookmarks from sqlite3 to an array ##
 readarray -t dbarray < <(sqlite3 -list $sqltdata 'select url from moz_places where id in (select fk from moz_bookmarks where parent in ( select "id" from moz_bookmarks where title == "'$favdir'"))')
 fi
-cd  $dl_folder || exit
+cd  "$dl_folder" || exit
 
 ## Let youtube-dl do the work  and download brandnew videos ##
+
+# Get out of here with 2X CTRL+C
+trap "echo Exited!; exit;" SIGINT SIGTERM
 
 for i in "${dbarray[@]}"
 do
 
 iurl=$(echo -n "$i" | sed -E "s/\//%/g")
-$yot_dl_p $aria2 --download-archive $dl_folder/archive/"$iurl" --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
-## echo "$iurl"
+$yot_dl_p $aria2 --download-archive "$dl_folder"/archive/"$iurl" --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
+
 done
 exit
