@@ -20,7 +20,6 @@ declare -i ffdefault
 declare -i ffon
 ## Variables to edit carefully ##
 sleep 1
-declare -i zaehl=0
 
 # Firefox running ?#
 ffon=0; pgrep -f firefox && ffon=1 
@@ -95,8 +94,9 @@ cd  $dl_folder || exit
 
 for i in "${dbarray[@]}"
 do
-((zaehl++))
-$yot_dl_p $aria2 --download-archive $dl_folder/archive/archive-$zaehl.txt --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
-# echo $i
+
+iurl=$(echo -n "$i" | sed -E "s/\//%/g")
+$yot_dl_p $aria2 --download-archive $dl_folder/archive/"$iurl" --dateafter "$datum" --playlist-end "$perday" --max-downloads "$perday" "$i"
+## echo "$iurl"
 done
 exit
