@@ -1,33 +1,40 @@
 #!/bin/bash
 ## This Shellscript downloads all fresh videos from a firefox bookmark folder. ##
 
-### Variables to edit from the user##
+### Variables to edit from the user###
 
-## path to youtube-dl. If you dont know, use cli: "which youtube-dl"#
-# example declare -r yot_dl_p=$(which youtube-dl)
-# example declare -r yot_dl_p="youtube-dl"
+## path to youtube-dl. If you dont know, use shell command:"which youtube-dl" ##
+# example1 declare -r yot_dl_p=$(which youtube-dl)
+# example2 declare -r yot_dl_p="youtube-dl"
 declare -r yot_dl_p="$HOME/bin/youtube-dl"
+#Test
 test="Program youtube-dl not found" ; find "$yot_dl_p"  >/dev/null 2>&1  && test="youtube-dl found at: $yot_dl_p"
 echo "$test"
-# folder for the downloaded Videos #
+
+# folder for the downloaded Videos mkdir "thefolder"and"thefolder/profile" by hand. #
 declare -r dl_folder="$HOME/Downloads/youtube-dl"
+#Test
 test="No Download folder defined" ; find "$dl_folder"  >/dev/null 2>&1  && test="Found Downlad folder at: $dl_folder"
 echo "$test"
+
 # load from "database" or "array".#
 declare -r loadfrom=database
+
 declare -a dbarray
 # If Loadfrom=database, save all your Youtube playlists in favdir example (amp3) #
 declare -r favdir="amp3"
+
+## Variables to edit carefully ##
 declare -i ffdefault
 declare -i ffon
-## Variables to edit carefully ##
+
 sleep 1
 
-# Firefox is running ?#
-# ffon=0; pgrep -f firefox && ffon=1  // + echo pid numbers
+# Test if Firefox is running ? 
 ffon=0; pgrep -f firefox >/dev/null 2>&1  && ffon=1
 
-##youtube-dl Parameter
+## youtube-dl Parameter to edit from the user ##
+
 # Date= yesterday #
 datum=$(date -d "1 day ago" '+%Y%m%d')
 # Max. videos / datum to each playlist #
@@ -43,13 +50,13 @@ sqltdata=places.sqlite
 $yot_dl_p -U 
 ## or 
 # pip install --upgrade youtube-dl
+# sudo apt-get install youtube-dl
 
-
-## Start ##
+## Nothing  to do here. Find default profile.##
 
 if [ $loadfrom == database ]
 then
-#Firefox profile ?
+# Test Firefox profile ?
 cd ~/.mozilla/firefox || exit
 ffdefault=$(find ./ -maxdepth 1 -name "*default*" -type d | wc -l)
 if [ "$ffdefault" -gt 1 ]
@@ -63,18 +70,18 @@ echo "There is no Firefox profile in your $HOME/.mozilla/firefox but it should. 
 exit
 fi
 
-# If more then 1 FF profile  Edit here ! 
-# change *default*  to your profile. Example fdgsfdgfs43543.default.fdsgf 
+# If more then 1 FF profile  or no default is found , edit the path here by hand ! 
+# example: change next line to: cd /home/foo/.mozilla/firefox/fdgsfdgfs43543.mything.fdsgf 
 cd ./*default* || exit
 
-# you cannot read from a running sqlite, but to copy is allowed#
+# Nothing to do here. youtube-dl cannot read from a running sqlite, but to copy is allowed #
 if [ $ffon == 1 ]
 then
 cp $sqltdata places2.sqlite
 sqltdata=places2.sqlite
 fi
 fi
-## only edit dbarray test-content if you want to use it
+## only edit dbarray test-content if you want to use it ##
 
 if [ $loadfrom == array ]
 then
