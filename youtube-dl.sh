@@ -6,53 +6,13 @@ declare -i ffdefault
 declare -i ffon=0
 declare -a dbarray #videoclips
 declare -a ydarray #youtube-dl parameters
+###------------------------------------------------------
+### Variables to edit from user --->START ###
 
-### Variables to edit from user###
-
-## path to youtube-dl. If you dont know, use shell command:"which youtube-dl" ##
-# example1 declare -r yot_dl_p=$(which youtube-dl)
-# example2 declare -r yot_dl_p="youtube-dl"
-declare -r yot_dl_p="$HOME/bin/youtube-dl"
-
-#Setup Test
-test="Program youtube-dl not found" ; find "$yot_dl_p"  >/dev/null 2>&1 \
-&& test="youtube-dl found at: $yot_dl_p"
-echo "$test"
-
-# folder for the downloaded Videos " mkdir thefolder ; mkdir thefolder/archive " by hand. #
-declare -r dl_folder="$HOME/Downloads/youtube-dl"
-
-#Setup Test
-test="No Download folder defined" ; find "$dl_folder"  >/dev/null 2>&1 \
-&& test="Found Download folder at: $dl_folder"
-echo "$test"
-
-# load from "database" or "array". Choose 1 ! 
+# IMPORTANT ! load from "database" or "array". Choose 1 ! 
 declare -r loadfrom=database
-
 # IMPORTANT ! if Loadfrom=database, save all your Youtube playlists in FF favdir example (amp3) #
 declare -r favdir="amp3"
-
-## youtube-dl Parameter to edit from  user ##
-
-# Date= yesterday #
-datum=$(date -d "1 day ago" '+%Y%m%d')
-ydarray[0]="--dateafter $datum"
-# Max. videos / datum to each playlist #
-perday=4
-ydarray[1]="--playlist-end $perday"
-ydarray[2]="--max-downloads $perday"
-# for more youtube-dl parameters
-# if aria2 is installed example : #
-# ydarray[3]='--external-downloader aria2c  --external-downloader-args "-j 8 -s 8 -x 8 -k 5M"'
-ydarray[3]=""
-
-## Update your youtube-dl ! ##
-$yot_dl_p -U
-## or 
-# pip install --upgrade youtube-dl
-# sudo apt-get install youtube-dl
-
 
 # You may edit dbarray as you want to.
 # This has no effect if loadfrom=database
@@ -64,7 +24,57 @@ if [ $loadfrom == array ] ; then
     )
 fi
 
-### End of variables to edit from the user###
+### Variables to edit from user --->STOP###
+###--------------------------------------------------
+
+## path to youtube-dl. If you dont know, default should work in most cases" ##
+# example2 declare -r yot_dl_p="youtube-dl"
+# example3 declare -r yot_dl_p="$HOME/bin/youtube-dl"
+yot_dl_p=$(command -v youtube-dl)
+
+#Setup Test "yot_dl_p"
+test="Program youtube-dl not found" ; find "$yot_dl_p"  >/dev/null 2>&1 \
+&& test="youtube-dl found at: $yot_dl_p"
+echo "$test"
+
+## Update your youtube-dl ! ##
+$yot_dl_p -U
+## or 
+# pip install --upgrade youtube-dl
+# sudo apt-get install youtube-dl
+# youtube-dl update with crontab
+
+# folder for the downloaded Videos  #
+# default folder. Do not edit here,you will be asked
+dl_folder="$HOME/Downloads/youtube-dl"
+
+#Check for dl_folder and make 1 if not exist.
+test="notfound" ; find "$dl_folder"  >/dev/null 2>&1 \
+&& test="Found Download folder at: $dl_folder"
+if [ "$test" == notfound ] ;then
+    echo "Hit ENTER or change and accept this folder for video storage !"
+    read -r -e -i "$dl_folder" dl_folder 
+    echo "Download folder is $dl_folder"
+    mkdir "$dl_folder" && mkdir "$dl_folder"/archive
+else
+    echo "$test"
+fi
+
+## youtube-dl Parameterlist as array START ##
+
+# Date= yesterday #
+datum=$(date -d "1 day ago" '+%Y%m%d')
+ydarray[0]="--dateafter $datum"
+# Max. videos / datum to each playlist #
+perday=4
+ydarray[1]="--playlist-end $perday"
+ydarray[2]="--max-downloads $perday"
+# For more youtube-dl parameters
+# if aria2 is installed example : #
+# ydarray[3]='--external-downloader aria2c  --external-downloader-args "-j 8 -s 8 -x 8 -k 5M"'
+ydarray[3]=""
+
+## youtube-dl Paramrterlist STOP ##
 
 if [ $loadfrom == database ] ; then
     # firefox database#
