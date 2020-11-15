@@ -12,8 +12,8 @@ To use this script you need: Shell, [youtube-dl](https://youtube-dl.org/), Firef
 
 No firefox, no problem , write your playlists to an array.
 ## Useful things
-1. There is a checker for dependencies: check.sh
-2.There is a notifier script for the Kubuntu desktop: yt-dl-send-notify.sh
+1 There is a checker for dependencies: check.sh
+2 There is a notifier script for the Kubuntu desktop: yt-dl-send-notify.sh
 ## Crontab these scripts  !
 1. 0 */2 * * * /home/foo/bin/youtube-dl.sh > /dev/null 2>&1
 
