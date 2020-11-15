@@ -1,23 +1,19 @@
 
 
 # FF-auto-youtube-download-
-## Download  Video folders and playlists from links stored in an (1)array or (2)Firefox-bookmarks-folder.
+## Download  Video folders and playlists from links stored in an Firefox-bookmarks-folder.
 [![Build Status](https://travis-ci.org/dewomser/FF-auto-youtube-download-.svg?branch=master)](https://travis-ci.org/dewomser/FF-auto-youtube-download-) Travis CI / Shellcheck approved.
 
-No need to login at Youtube !
+No Youtube login needed !
 
-youtube-dl.sh downloads only newest Videos into local download folder. Modus is 1 or 2
+youtube-dl.sh downloads automatic newest Videos into local download folder.
 
-1. array : only shell and [youtube-dl](https://github.com/rg3/youtube-dl) is needed
+To use this script you need: Shell, [youtube-dl](https://youtube-dl.org/), Firefox (tested with 66 - 82), [sqlite3](https://www.sqlite.org/index.html) . //aria2 (fast download as an option)
 
-2. firefox-bookmark-folder : shell, [youtube-dl](https://github.com/rg3/youtube-dl), Firefox (tested with 66 - 81), sqlite3 . //aria2 (fast download as an option)
-
+No firefox, no problem , write your playlists to an array.
 ## Useful things
-There is a checker for dependencies: check.sh
-
-There is a notifier script for the Kubuntu desktop: yt-dl-send-notify.sh
-
-
+ 1. There is a checker for dependencies: check.sh
+ 2.There is a notifier script for the Kubuntu desktop: yt-dl-send-notify.sh
 ## Crontab these scripts  !
 1. 0 */2 * * * /home/foo/bin/youtube-dl.sh > /dev/null 2>&1
 
