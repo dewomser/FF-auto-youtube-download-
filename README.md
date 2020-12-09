@@ -1,7 +1,7 @@
 
 
-# FF-auto-youtube-download-TEST-ONLY
-## DO NOT USE !
+# FF-auto-youtube-download-TEST-
+## Get all Videos from Firefox bookmarks
 [![Build Status](https://travis-ci.org/dewomser/FF-auto-youtube-download-.svg?branch=master)](https://travis-ci.org/dewomser/FF-auto-youtube-download-) Travis CI / Shellcheck approved.
 
 No Youtube login needed !
