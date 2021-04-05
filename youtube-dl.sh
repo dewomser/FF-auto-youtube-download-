@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 ## This Shellscript downloads all fresh videos from a firefox bookmark folder. ##
 
 ## Variables to edit carefully not ##
@@ -8,6 +8,8 @@ declare -a dbarray #videoclips
 declare -a ydarray #youtube-dl parameters
 ###------------------------------------------------------
 ### Variables to edit from user --->START ###
+# Firefox path profile.  I guess this is default right now. 
+fpath="default-release"
 
 # IMPORTANT ! load from "database" or "array". Choose 1 ! 
 declare -r loadfrom=database
@@ -33,15 +35,16 @@ fi
 yot_dl_p=$(command -v youtube-dl)
 
 #Setup Test "yot_dl_p"
-test="Program youtube-dl not found" ; find "$yot_dl_p" type -f >/dev/null 2>&1 \
-&& test="youtube-dl found at: $yot_dl_p"
-echo "$test"
+
+## [ -z "$var" ] && echo "Empty" || echo "Not empty"
+
+ [ -z "$yot_dl_p" ] && echo "Program youtube-dl not found" || echo "youtube-dl found at: $yot_dl_p"
+
 
 ## Update your youtube-dl ! ##
-#while youtube-dl is not avalable at github there is only Error, -U 
-# youtube-dl update with crontab / my choice:  as root:  pip3 install --upgrade youtube-dl
+# youtube-dl update with crontab / good choice:  as root:  pip3 install --upgrade youtube-dl
 # pip install --upgrade youtube-dl / mind the install path
-# $yot_dl_p -U
+$yot_dl_p -U 
 # sudo apt-get install youtube-dl
 ## or , or nothing
 
@@ -86,11 +89,11 @@ if [ $loadfrom == database ] ; then
     #ffon=0; pgrep -f firefox >/dev/null 2>&1  && ffon=1
     # Test Firefox profile ?
     cd ~/.mozilla/firefox || exit
-    ffdefault=$(find ./ -maxdepth 1 -name "*Default*" -type d | wc -l)
+    ffdefault=$(find ./ -maxdepth 1 -name "*""$fpath""$*" -type d | wc -l)
     if [ "$ffdefault" -gt 1 ] ; then
         echo "There is more then 1 default Firefox profile ! You have to choose one at \
         ~/.mozilla/firefox and edit this script for your need"
-        find ./ -maxdepth 1 -name "*Default*" -type d
+        find ./ -maxdepth 1 -name "*default*" -type d
         exit
     elif [ "$ffdefault" == 0 ] ; then
         echo "There is no Firefox profile in your $HOME/.mozilla/firefox \
@@ -100,7 +103,7 @@ if [ $loadfrom == database ] ; then
 
     # If more then 1 FF profile  or no default is found , edit the path here by hand ! 
     # example: change next line to: cd /home/foo/.mozilla/firefox/fdgsfdgfs43543.mything.fdsgf 
-    cd ./*Default* || exit
+    cd ./*"$fpath""$*" || exit
 
     # Nothing to do here. youtube-dl cannot read from a running sqlite, but to copy is allowed #
     # if [ $ffon == 1 ] ; then
@@ -122,7 +125,7 @@ trap "echo Exited!; exit;" SIGINT SIGTERM
 for i in "${dbarray[@]}"; do
     iurl=$(echo -n "$i" | sed -E "s/\//%/g")
     $yot_dl_p  --continue --no-overwrites --ignore-errors --download-archive "$dl_folder"/archive/"$iurl"\
-    ${ydarray[0]} ${ydarray[1]} ${ydarray[2]} ${ydarray[3]} "$i"
+    ${ydarray[0]} ${ydarray[1]} ${ydarray[2]} ${ydarray[3]} "$i" ;
 done
 exit
 # exit or not. It is your choice
