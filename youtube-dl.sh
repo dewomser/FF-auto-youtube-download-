@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 ## This Shellscript downloads all fresh videos from a firefox bookmark folder. ##
 
 ## Variables to edit carefully not ##
