@@ -23,3 +23,11 @@ No firefox, no problem , write your playlists to an array.
 2. 0 *  * * *  XDG_RUNTIME_DIR=/run/user/$(id -u) /home/foo/bin/yt-dl-send-notify.sh
 
 3. update youtube-dl, may be useful (0 12 * * * youtube-dl -U)
+<script src="https://utteranc.es/client.js"
+        repo="dewomser/FF-auto-youtube-download-"
+        issue-term="pathname"
+        label="lolo98"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
