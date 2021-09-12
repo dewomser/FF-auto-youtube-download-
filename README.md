@@ -8,7 +8,7 @@ No Youtube login needed !
 
 youtube-dl.sh downloads automatic newest Videos into local download folder.
 
-To use this script you need: Shell, [youtube-dl](https://youtube-dl.org/), Firefox (tested with 66 - 82), [sqlite3](https://www.sqlite.org/index.html) . //aria2 (fast download as an option)
+To use this script you need: Shell, [yt-dlp](https://github.com/yt-dlp/yt-dlp) fallback is now  [youtube-dl](https://youtube-dl.org/), Firefox (tested with 66 - 92), [sqlite3](https://www.sqlite.org/index.html) . //aria2 (fast download as an option)
 
 No firefox, no problem , write your playlists to an array.
 ## Useful things

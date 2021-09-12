@@ -32,8 +32,9 @@ fi
 ## path to youtube-dl. If you dont know, default should work in most cases" ##
 # example2 declare -r yot_dl_p="youtube-dl"
 # example3 declare -r yot_dl_p="$HOME/bin/youtube-dl"
-yot_dl_p=$(command -v youtube-dl)
-
+##  Downloader is  now yt-dlp . Fallback is youtube-dl ##
+#
+yot_dl_p=$(command -v yt-dlp) ||  yot_dl_p=$(command -v youtube-dl)
 #Setup Test "yot_dl_p"
 
 ## [ -z "$var" ] && echo "Empty" || echo "Not empty"
