@@ -16,6 +16,7 @@ To use this script you need: Shell, [yt-dlp](https://github.com/yt-dlp/yt-dlp) f
 
 
 No firefox, no problem , write your playlists to an array.
+
 ## Useful things
 * There is a checker for dependencies: check.sh
 * There is a notifier script for the Kubuntu desktop: yt-dl-send-notify.sh
@@ -26,3 +27,6 @@ No firefox, no problem , write your playlists to an array.
 
 3. update youtube-dl, may be useful (0 12 * * * youtube-dl -U)
 
+------------
+There is script for the Chromium Browser . It's pre-alpha but works for me. Support needed !
+------------
