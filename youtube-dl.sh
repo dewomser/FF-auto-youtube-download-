@@ -2,7 +2,7 @@
 ## This Shellscript downloads all fresh videos from a firefox bookmark folder. ##
 
 ## Variables to edit carefully not ##
-declare -i ffdefault
+#declare -i ffdefault
 #declare -i ffon=0
 declare -a dbarray #videoclips
 declare -a ydarray #youtube-dl parameters
@@ -11,7 +11,7 @@ declare -a ydarray #youtube-dl parameters
 # Firefox path profile.  I guess this is default right now. 
 #Is there … /.mozilla/firefox/34567k.lolo and you use it  … /*.lolo/
 fpath="$HOME/snap/firefox/common/.mozilla/firefox/*.defa/"
-cd $fpath
+cd "$fpath" || exit
 
 # IMPORTANT ! load from "database" or "array". Choose 1 ! 
 declare -r loadfrom=database
