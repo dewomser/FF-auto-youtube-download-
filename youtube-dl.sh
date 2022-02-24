@@ -9,7 +9,9 @@ declare -a ydarray #youtube-dl parameters
 ###------------------------------------------------------
 ### Variables to edit from user --->START ###
 # Firefox path profile.  I guess this is default right now. 
-fpath="default-release"
+#Is there … /.mozilla/firefox/34567k.lolo and you use it  … /*.lolo/
+fpath="$HOME/snap/firefox/common/.mozilla/firefox/*.defa/"
+cd $fpath
 
 # IMPORTANT ! load from "database" or "array". Choose 1 ! 
 declare -r loadfrom=database
@@ -32,9 +34,8 @@ fi
 ## path to youtube-dl. If you dont know, default should work in most cases" ##
 # example2 declare -r yot_dl_p="youtube-dl"
 # example3 declare -r yot_dl_p="$HOME/bin/youtube-dl"
-##  Downloader is  now yt-dlp . Fallback is youtube-dl ##
-#
-yot_dl_p=$(command -v yt-dlp) ||  yot_dl_p=$(command -v youtube-dl)
+yot_dl_p=$(command -v yt-dlp) || yot_dl_p=$(command -v youtube-dl)
+
 #Setup Test "yot_dl_p"
 
 ## [ -z "$var" ] && echo "Empty" || echo "Not empty"
@@ -89,25 +90,7 @@ if [ $loadfrom == database ] ; then
     # Test Setup if Firefox is running ? 
     #ffon=0; pgrep -f firefox >/dev/null 2>&1  && ffon=1
     # Test Firefox profile ?
-    cd ~/.mozilla/firefox || exit
-    ffdefault=$(find ./ -maxdepth 1 -name "*""$fpath""$*" -type d | wc -l)
-    if [ "$ffdefault" -gt 1 ] ; then
-        echo "There is more then 1 default Firefox profile ! You have to choose one at \
-        ~/.mozilla/firefox and edit this script for your need"
-        find ./ -maxdepth 1 -name "*default*" -type d
-        exit
-    elif [ "$ffdefault" == 0 ] ; then
-        echo "There is no Firefox profile in your $HOME/.mozilla/firefox \
-        but it should. Script can't continue !"
-        exit
-    fi
-
-    # If more then 1 FF profile  or no default is found , edit the path here by hand ! 
-    # example: change next line to: cd /home/foo/.mozilla/firefox/fdgsfdgfs43543.mything.fdsgf 
-    cd ./*"$fpath""$*" || exit
-
-    # Nothing to do here. youtube-dl cannot read from a running sqlite, but to copy is allowed #
-    # if [ $ffon == 1 ] ; then
+ 
         cp $sqltdata places2.sqlite
         sqltdata=places2.sqlite
     # fi
