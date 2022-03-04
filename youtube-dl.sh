@@ -10,8 +10,9 @@ declare -a ydarray #youtube-dl parameters
 ### Variables to edit from user --->START ###
 # Firefox path profile.  I guess this is default right now. 
 #Is there … /.mozilla/firefox/34567k.lolo and you use it  … /*.lolo/
-fpath="$HOME/snap/firefox/common/.mozilla/firefox/*.defa/"
-cd "$fpath" || exit
+cd "$HOME/snap/firefox/common/.mozilla/firefox/"*.defa || exit
+
+ 
 
 # IMPORTANT ! load from "database" or "array". Choose 1 ! 
 declare -r loadfrom=database
@@ -109,7 +110,7 @@ trap "echo Exited!; exit;" SIGINT SIGTERM
 for i in "${dbarray[@]}"; do
     iurl=$(echo -n "$i" | sed -E "s/\//%/g")
     $yot_dl_p  --continue --no-overwrites --ignore-errors --download-archive "$dl_folder"/archive/"$iurl"\
-    ${ydarray[0]} ${ydarray[1]} ${ydarray[2]} ${ydarray[3]} "$i" ;
+    ${ydarray[0]} ${ydarray[1]} ${ydarray[2]} ${ydarray[3]} "$i"
 done
 exit
 # exit or not. It is your choice
