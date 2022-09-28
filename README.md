@@ -3,7 +3,7 @@
 # FF-auto-youtube-download-TEST-
 ## Get all Videos from Firefox bookmarks
 
-[![Trigger: Push action](https://github.com/dewomser/FF-auto-youtube-download-/actions/workflows/blank.yml/badge.svg?branch=master)](https://github.com/dewomser/FF-auto-youtube-download-/actions/workflows/blank.yml)
+
 
 
 No Youtube login needed !
