@@ -8,15 +8,21 @@ declare -a dbarray #videoclips
 declare -a ydarray #youtube-dl parameters
 ###------------------------------------------------------
 ### Variables to edit from user --->START ###
-# Firefox path profile.  I guess this is default right now. 
-#Is there … /.mozilla/firefox/34567k.lolo and you use it  … /*.lolo/
-#fpath="$HOME/.mozilla/firefox/zkqtt9pd.default-release"
-cd "$HOME"/.mozilla/firefox || exit; profile="$(sed -n '/\[Install/,/^$/p' profiles.ini | grep  Default=)"; fpath="${profile##*=}"
+## Firefox path profile.
+# alternative to the fpllowing script
+# start firefox -p from Terminal
+# choose a profile
+# like so:
+# fpath="$HOME/.mozilla/firefox/zkqtt9pd.default-release"
+# cd "$fpath"
+cd "$HOME"/.mozilla/firefox || cd "$HOME"/snap/firefox/common/.mozilla/firefox
+profile="$(sed -n '/\[Install/,/^$/p' profiles.ini | grep  Default=)"; fpath="${profile##*=}"
 cd "$fpath" || exit
+## End profile
 
-# IMPORTANT ! load from "database" or "array". Choose 1 ! 
+# IMPORTANT ! load from "database" or "array" !
+#if loadfrom=database, save all your Youtube playlists in FF favdir example (amp3)
 declare -r loadfrom=database
-# IMPORTANT ! if Loadfrom=database, save all your Youtube playlists in FF favdir example (amp3) #
 declare -r favdir="amp3"
 
 # You may edit dbarray as you want to.
@@ -38,18 +44,15 @@ fi
 yot_dl_p=$(command -v yt-dlp) || yot_dl_p=$(command -v youtube-dl)
 
 #Setup Test "yot_dl_p"
-
-## [ -z "$var" ] && echo "Empty" || echo "Not empty"
-
- [ -z "$yot_dl_p" ] && echo "Program youtube-dl not found" || echo "youtube-dl found at: $yot_dl_p"
+[ -z "$yot_dl_p" ] && echo "Program youtube-dl not found" || echo "youtube-dl found at: $yot_dl_p"
 
 
 ## Update your youtube-dl ! ##
 # youtube-dl update with crontab / good choice:  as root:  pip3 install --upgrade youtube-dl
 # pip install --upgrade youtube-dl / mind the install path
-$yot_dl_p -U 
 # sudo apt-get install youtube-dl
-## or , or nothing
+## or comment next line
+$yot_dl_p -U
 
 
 # folder for the downloaded videos  #
@@ -83,7 +86,7 @@ ydarray[2]="--max-downloads $perday"
 # ydarray[3]='--external-downloader aria2c  --external-downloader-args "-j 8 -s 8 -x 8 -k 5M"'
 ydarray[3]=""
 
-## youtube-dl Paramrterlist STOP ##
+## End youtube-dl Paramrterlist ##
 
 if [ $loadfrom == database ] ; then
     # firefox database#
