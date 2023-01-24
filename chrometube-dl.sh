@@ -97,7 +97,7 @@ trap "echo Exited!; exit;" SIGINT SIGTERM
 
 for i in "${dbarray[@]}"; do
     iurl=$(echo -n "$i" | tr -d \')
-    iarch=$(echo -n "$i" | sed -E "s/\//%/g")
+   # iarch=$(echo -n "$i" | sed -E "s/\//%/g")
     
     $yot_dl_p  --continue --no-overwrites --ignore-errors --download-archive "$dl_folder"/archive/"$iurl""${ydarray[0]}""${ydarray[1]}""${ydarray[2]}""${ydarray[3]}" "$i" ;
 done
