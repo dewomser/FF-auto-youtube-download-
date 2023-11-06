@@ -1,6 +1,6 @@
 
 
-# FF-auto-youtube-download-TEST-
+# FF-auto-youtube-download
 ## Get all Videos from Firefox bookmarks
 Shellchecked: [![Trigger: Push action](https://github.com/dewomser/FF-auto-youtube-download-/actions/workflows/main.yml/badge.svg)](https://github.com/dewomser/FF-auto-youtube-download-/actions/workflows/main.yml)
 
