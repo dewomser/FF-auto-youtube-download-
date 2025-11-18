@@ -5,7 +5,6 @@
 Shellchecked: [![Trigger: Push action](https://github.com/dewomser/FF-auto-youtube-download-/actions/workflows/main.yml/badge.svg)](https://github.com/dewomser/FF-auto-youtube-download-/actions/workflows/main.yml)
 
 
-
 No Youtube login needed !
 
 youtube-dl.sh downloads automatic newest Videos into local download folder.
